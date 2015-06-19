@@ -37,13 +37,8 @@ public class ClienteDAO extends ConnectionFactory {
 	}
 	
 	/**
-	 * 
-	 * M�todo respons�vel por listar todos os clientes do banco
-	 *
+	 * Método responsável por listar todos os clientes do banco
 	 * @return ArrayList<CLiente> clientes
-	 * @author Douglas Costa <douglas.cst90@gmail.com.br>
-	 * @since 17/02/2013 02:01:35
-	 * @version 1.0
 	 */
 	public ArrayList<Cliente> listarTodos(){
 		Connection conexao = null;
@@ -69,12 +64,100 @@ public class ClienteDAO extends ConnectionFactory {
 			}
 			
 		} catch (Exception e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
+			System.out.println("Erro ao tentar listar todos os clientes: " + e);
 			e.printStackTrace();
 		} finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return clientes;
+	}
+	
+	public Cliente getCliente(Integer id){
+		Connection conexao = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Cliente cliente = null;
+		conexao = criarConexao();
+		try {
+			pstmt = conexao.prepareStatement("select * from cliente where id="+id);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				cliente = new Cliente();
+				cliente.setId(rs.getInt("id"));
+				cliente.setNome(rs.getString("nome"));
+				cliente.setCpf(rs.getString("cpf"));
+				cliente.setEndereco(rs.getString("endereco"));
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao tentar cosultar cliente " + e);
+			e.printStackTrace();
+		} finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return cliente;
+	}
+	
+	public Integer addCliente(Cliente cliente){
+		Connection conexao = null;
+		PreparedStatement pstmt = null;
+		conexao = criarConexao();
+		Integer inseriu = 0;
+		try {
+			pstmt = conexao.prepareStatement("insert into cliente(nome, cpf, endereco) values(?,?,?)");
+			pstmt.setString(1, cliente.getNome());
+			pstmt.setString(2, cliente.getCpf());
+			pstmt.setString(3, cliente.getEndereco());
+			inseriu = pstmt.executeUpdate();
+	
+		} catch (Exception e) {
+			System.out.println("Erro ao tentar Incluir cliente " + e);
+			e.printStackTrace();
+		} finally {
+			fecharConexao(conexao, pstmt, null);
+		}
+		return inseriu;
+	}
+	
+	public Integer updateCliente(Cliente cliente){
+		Connection conexao = null;
+		PreparedStatement pstmt = null;
+		conexao = criarConexao();
+		Integer alterou = 0;
+		try {
+			pstmt = conexao.prepareStatement("update cliente set nome=?, cpf=?, endereco=? where id=?");
+			pstmt.setString(1, cliente.getNome());
+			pstmt.setString(2, cliente.getCpf());
+			pstmt.setString(3, cliente.getEndereco());
+			pstmt.setInt(4, cliente.getId());
+			alterou = pstmt.executeUpdate();
+	
+		} catch (Exception e) {
+			System.out.println("Erro ao tentar alterar cliente " + e);
+			e.printStackTrace();
+		} finally {
+			fecharConexao(conexao, pstmt, null);
+		}
+		return alterou;
+	}
+	
+	public Integer removeCliente(Integer id){
+		Connection conexao = null;
+		PreparedStatement pstmt = null;
+		conexao = criarConexao();
+		Integer removeu = 0;
+		try {
+			pstmt = conexao.prepareStatement("delete from cliente where id=?");
+			pstmt.setInt(1, id);
+			removeu = pstmt.executeUpdate();
+	
+		} catch (Exception e) {
+			System.out.println("Erro ao tentar remover cliente " + e);
+			e.printStackTrace();
+		} finally {
+			fecharConexao(conexao, pstmt, null);
+		}
+		return removeu;
 	}
 	
 }
