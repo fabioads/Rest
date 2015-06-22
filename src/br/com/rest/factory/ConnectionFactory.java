@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 
 /**
  * 
- * Classe responsável por conter os metodos criar e fechar o banco de dados.
+ * Class responsible for creating and close connection
  *
  * @author Fábio Henrique Pires <fabioh.ads@gmail.com>
  * @since 18/06/2015 
@@ -16,41 +16,41 @@ import java.sql.ResultSet;
  */
 public class ConnectionFactory {
 
-	// Caminho do banco de dados.
+	// Path do Data Base.
 	private static final String DRIVER = "org.postgresql.Driver";
 	private static final String URL = "jdbc:postgresql://localhost:5432/webservice";
-	private static final String USUARIO = "postgres";
-	private static final String SENHA = "123";
+	private static final String USER = "postgres";
+	private static final String PASSWORD = "123";
 	
 
 	/**
 	 * 
-	 * Método responsável por criar uma conexao com o banco 
+	 * Method responsible for create connection
 	 *
 	 */
-	public Connection criarConexao(){
+	public Connection createConnection(){
 		
-		Connection conexao = null;
+		Connection connection = null;
 		
 		try {
 			
 			Class.forName(DRIVER);
-			conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
+			connection = DriverManager.getConnection(URL, USER, PASSWORD);
 			
 		} catch (Exception e) {
-			System.out.println("Erro ao criar conexão com o banco: " + URL);
+			System.out.println("Error in connection create: " + URL);
 			e.printStackTrace();
 		}
-		return conexao;
+		return connection;
 	}
 	
 	
-	public void fecharConexao(Connection conexao, PreparedStatement pstmt, ResultSet rs){
+	public void closeConnection(Connection connection, PreparedStatement pstmt, ResultSet rs){
 		
 		try {
 			
-			if(conexao != null){
-				conexao.close();
+			if(connection != null){
+				connection.close();
 			}
 			if(pstmt != null){
 				pstmt.close();
@@ -60,7 +60,7 @@ public class ConnectionFactory {
 			}
 					
 		} catch (Exception e) {
-			System.out.println("Erro ao fechar conexão com o banco: " + URL);
+			System.out.println("Error in connection closing: " + URL);
 		}
 	}
 }

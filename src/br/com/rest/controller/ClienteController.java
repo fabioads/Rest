@@ -7,7 +7,7 @@ import br.com.rest.model.Cliente;
 
 /**
  * 
- * Classe responsável por ser o controlador entre o resource e a camada DAO
+ * Class responsible for being the controller of the resource and the DAO layer
  *
  * @author Fábio Henrique Pires <fabioh.ads@gmail.com>
  * @since 18/06/2015 
@@ -15,21 +15,22 @@ import br.com.rest.model.Cliente;
  */
 public class ClienteController {
 	
-	public ArrayList<Cliente> listarTodos(){
+	public ArrayList<Cliente> listAll(){
 		System.out.println("Retornando todos os clientes");
-		return ClienteDAO.getInstance().listarTodos();
+		return ClienteDAO.getInstance().listAll();
 	}
 	
 	public Cliente getCliente(Integer id){
 		System.out.println("Retornando cliente");
-		return ClienteDAO.getInstance().getCliente(id);
+		Cliente cli = ClienteDAO.getInstance().getCliente(id);
+		cli.getEndereco().setId(null);
+		return cli;
 	}
 	
 	public String addCliente(Cliente cliente){
 		String msg = "Erro ao inserir cliente";
 		System.out.println("adicionando: "+ cliente.toString());
-		Integer inseriu = ClienteDAO.getInstance().addCliente(cliente);
-		if(inseriu > 0){
+		if(ClienteDAO.getInstance().addCliente(cliente)){
 			msg = "Cliente:" + cliente.getNome() + "inserido com sucesso!";
 		}
 		return msg;
@@ -38,8 +39,7 @@ public class ClienteController {
 	public String updateCliente(Cliente cliente){
 		String msg = "Erro ao Alterar cliente";
 		System.out.println("Alterando: "+ cliente.getNome());
-		Integer alterou = ClienteDAO.getInstance().updateCliente(cliente);
-		if(alterou > 0){
+		if(ClienteDAO.getInstance().updateCliente(cliente)){
 			msg = "Cliente:" + cliente.getNome() + " Alterado com sucesso!";
 		}
 		return msg;
@@ -48,12 +48,9 @@ public class ClienteController {
 	public String removeCliente(Integer id){
 		String msg = "Erro ao remover cliente";
 		System.out.println("Removendo");
-		Integer removeu = ClienteDAO.getInstance().removeCliente(id);
-		if(removeu > 0){
+		if(ClienteDAO.getInstance().removeCliente(id)){
 			msg = "Cliente removido com sucesso!";
 		}
 		return msg;
 	}
-	
-	
 }

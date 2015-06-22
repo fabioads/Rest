@@ -1,6 +1,5 @@
 package br.com.rest.resource;
 
-
 import java.util.ArrayList;
 
 import javax.ws.rs.core.MediaType;
@@ -16,36 +15,28 @@ import javax.ws.rs.Consumes;
 import br.com.rest.controller.ClienteController;
 import br.com.rest.model.Cliente;
 
-
-
 /**
- * 
- * Classe responsável por conter os metodos REST de acesso ao webservice
- *
+ * Class responsible for contain the REST methods of access to the webservice
  * @author Fábio Henrique Pires <fabioh.ads@gmail.com>
  * @since 18/06/2015
- * 
  */
 @Path("/api.teste")
 public class ClienteResource {
 
 	/** 
-	 * Método responsável por fazer chamada ao controller
-	 * e Listar todos os clientes
-	 *
+	 * List all customers
 	 * @return ArrayList<Cliente> 
 	 */
 	@GET
 	@Path("/clientes")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<Cliente> listarTodos(){
-		return new ClienteController().listarTodos();
+		return new ClienteController().listAll();
 	}
 	
 	/** 
-	 * Método responsável por fazer chamada ao controller
-	 * e Listar todos os clientes
-	 *
+	 * get customer by id
+	 * @param id
 	 */
 	@GET
 	@Path("/clientes/{id}")
@@ -55,18 +46,24 @@ public class ClienteResource {
 	}
 	
 	/** 
-	 * Método responsável por fazer chamada ao controller
-	 * e Criar um cliente.
-	 *
+	 * Create a customer.
+	 * @param cliente
+	 * @return
 	 */
 	
 	@POST
-	@Path("/clientes/inserir")
+	@Path("/clientes/insert")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)  
 	public String addCliente(Cliente cliente) {
 		return new ClienteController().addCliente(cliente);
 	}
+	
+	/**
+	 * Change customer 
+	 * @param cliente
+	 * @param id
+	 */
 	
 	@PUT
 	@Path("/clientes/update/{id}")
@@ -77,8 +74,12 @@ public class ClienteResource {
 		return new ClienteController().updateCliente(cliente);
 	}
 	
+	/**
+	 * delete customer
+	 * @param id
+	 */
 	@DELETE
-	@Path("/clientes/delete/{id}")
+	@Path("/clientes/remove/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String removeCliente(@PathParam("id") Integer id) {

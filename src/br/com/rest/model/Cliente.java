@@ -10,11 +10,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public final class Cliente {
 
-	private Integer id;
+	private Integer id = null;
 	private String nome;
 	private String cpf;
-	private String endereco;
+	private Endereco endereco;
 	
+	public Cliente(){
+		endereco = new Endereco();
+	}
 	
 	public Integer getId() {
 		return id;
@@ -34,20 +37,18 @@ public final class Cliente {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public String getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
-	public void setEndereco(String endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
 	
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", cpf=" + cpf
 				+ ", endereco=" + endereco + "]";
 	}
-	
 	
 	@Override
 	public int hashCode() {
